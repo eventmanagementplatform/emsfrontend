@@ -18,8 +18,11 @@ const Login = () => {
             if(result.data.message === "Login successful"){
                 console.log("Login Success");
                 localStorage.setItem('token', result.data.token);
+                
                 alert('Login successful!')
                 navigate('/home');
+                console.log('ems id: ',result.data.organizer.emsregistrationId)
+                localStorage.setItem('emsregistrationId', result.data.organizer.emsregistrationId);
             }
             else{
                 alert('Incorrect password! Please try again.');
