@@ -1,0 +1,49 @@
+/* Register.css */
+
+/* Give the main form box a subtle shadow and padding */
+.shadow {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhance form control spacing */
+.form-control {
+    padding: 10px;
+    font-size: 0.95rem;
+}
+
+/* Title and subtitle enhancements */
+h1, h4 {
+    font-weight: 600;
+}
+
+p {
+    font-size: 1rem;
+}
+
+/* Ensure image responsiveness */
+img.img-fluid {
+    max-height: 300px;
+    object-fit: cover;
+}
+
+/* Adjust spacing between sections on small screens */
+@media (max-width: 768px) {
+    .col-md-6 {
+        padding: 2rem 1rem;
+    }
+
+    img.img-fluid {
+        max-width: 100%;
+        height: auto;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    p {
+        text-align: center;
+    }
+}

@@ -1,0 +1,52 @@
+.landing-container {
+  text-align: center;
+  padding: 5rem 2rem;
+  background-color: #f7f9fc;
+  min-height: 100vh;
+}
+
+.landing-container h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.landing-container p {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.landing-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn, .btn-outline {
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: 0.3s ease;
+}
+
+.btn {
+  background-color: #2c3e50;
+  color: white;
+}
+
+.btn:hover {
+  background-color: #1a252f;
+}
+
+.btn-outline {
+  border: 2px solid #2c3e50;
+  color: #2c3e50;
+  background-color: transparent;
+}
+
+.btn-outline:hover {
+  background-color: #2c3e50;
+  color: white;
+}
