@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // ✅ No Link needed now
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Register.css';
 
@@ -11,6 +11,9 @@ const AddEvent = () => {
         price: '',
         description: '',
     });
+
+    const [message, setMessage] = useState('');
+    const [msgType, setMsgType] = useState(''); // 'success' or 'error'
 
     const navigate = useNavigate();
 
@@ -23,29 +26,44 @@ const AddEvent = () => {
         e.preventDefault();
         const token = localStorage.getItem('token');
 
-    if (!token) {
-      alert('You must be logged in to add events.');
-      navigate('/login');
-      return;
-    }
+        if (!token) {
+            setMessage('You must be logged in to add events.');
+            setMsgType('error');
+            setTimeout(() => {
+                setMessage('');
+                navigate('/login');
+            }, 1500);
+            return;
+        }
 
         try {
-            const res = await axios.post('http://localhost:5000/api/events/addevent', formData,
-                {
-          headers: {
-            Authorization: `Bearer ${token}`, // send token in headers
-          },
-        }
-            );
+            const res = await axios.post('http://localhost:5000/api/events/addevent', formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
             if (res.data === 'Already registered') {
-                alert('E-mail already registered! Please Login.');
-                navigate('/login');
+                setMessage('E-mail already registered! Please Login.');
+                setMsgType('error');
+                setTimeout(() => {
+                    setMessage('');
+                    navigate('/login');
+                }, 1500);
             } else {
-                alert('Event Added successfully!');
-                navigate('/home'); // ✅ Automatically redirects to home
+                setMessage('Event Added successfully!');
+                setMsgType('success');
+                // Clear the form fields but keep the message
+                setFormData({
+                    eventTitle: '',
+                    eventType: '',
+                    price: '',
+                    description: '',
+                });
+                // Do NOT clear message or redirect
             }
         } catch (err) {
-            console.error("Error submitting event:", err);
+            setMessage('Failed to add event.');
+            setMsgType('error');
         }
     };
 
@@ -53,21 +71,55 @@ const AddEvent = () => {
         <form onSubmit={handleSubmit} className="bg-light p-4 rounded mt-4" style={{ width: '350px' }}>
             <h4 className="mb-3">Add New Event</h4>
 
+            {message && (
+                <div
+                    className={`mb-3 p-2 text-center fw-bold rounded ${msgType === 'success' ? 'text-success border border-success bg-success bg-opacity-10' : 'text-danger border border-danger bg-danger bg-opacity-10'}`}
+                >
+                    {message}
+                </div>
+            )}
+
             <div className="mb-3">
                 <label className="form-label">Event Title</label>
-                <input type="text" className="form-control" name="eventTitle" onChange={handleChange} required />
+                <input
+                    type="text"
+                    className="form-control"
+                    name="eventTitle"
+                    value={formData.eventTitle}
+                    onChange={handleChange}
+                    required
+                />
             </div>
             <div className="mb-3">
                 <label className="form-label">Event Type</label>
-                <input type="text" className="form-control" name="eventType" onChange={handleChange} />
+                <input
+                    type="text"
+                    className="form-control"
+                    name="eventType"
+                    value={formData.eventType}
+                    onChange={handleChange}
+                />
             </div>
             <div className="mb-3">
                 <label className="form-label">Price</label>
-                <input type="number" className="form-control" name="price" onChange={handleChange} />
+                <input
+                    type="number"
+                    className="form-control"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleChange}
+                />
             </div>
             <div className="mb-3">
                 <label className="form-label">Description</label>
-                <input type="text" className="form-control" name="description" onChange={handleChange} required />
+                <input
+                    type="text"
+                    className="form-control"
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    required
+                />
             </div>
 
             <button type="submit" className="btn btn-primary w-100">Submit</button>
